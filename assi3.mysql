@@ -1,0 +1,94 @@
+--1
+SELECT EmpNo,Ename,Sal,Commission,Hire_date ,Mgr ,DeptNo from Emp JOIN Dept on
+Emp.DeptNo=Dept.DeptNo where DeptNo=10 or DeptNo=30;
+
+--2.)
+SELECT * FROM Dept WHERE DeptNo=(SELECT DeptNo from Emp,Dept where
+Emp.DeptNo=Dept.DeptNo having count(DeptNo) >2);
+
+--3.)
+SELECT * FROM Emp WHERE Ename like 'S%';
+
+--4.)
+SELECT * FROM Emp WHERE EXTRACT(YEAR FROM age(CURRENT_DATE(), Hire_date)) > 2;
+
+--5.)
+SELECT replace (Ename,'a','#') from Emp;
+
+--6.)
+SELECT E.Ename AS "Employee Name",M.Ename AS "Manager" FROM Emp E LEFT OUTER JOIN
+Emp M ON E.Mgr = M.EmpNo;
+
+--7.)
+SELECT Dept.Dname, SUM(Sal) FROM Emp , dept where Emp.DeptNo =Dept.DeptNo GROUP BY
+Dept.DeptNo;
+
+--8.) 
+SELECT * from Emp ,Dept where M.DeptNo =Dept.DeptNo;
+
+--9.)
+UPDATE Emp SET Sal = Sal + (Sal * 10/100);
+
+--10.)
+DELETE FROM Emp WHERE Emp.EmpNo=(SELECT Emp.EmpNo from Emp,Dept where
+Emp.DeptNo =Dept.DeptNo and Dept.Loc ='chennai') ;
+
+--11.)
+SELECT Ename, Sal, Commission,(Sal + ((Sal*Commission) / 100)) as "total_salary" from Emp;
+
+--12.)
+SELECT ALTER TABLE Emp modify Ename varchar(250);
+
+--13.)
+SELECT GetDate() AS 'CurrentDATETime';
+--14.) 
+CREATE TABLE STUDENT (Student_ID int,Student_LastName varchar(255),Student_FirstName
+varchar(255),Address varchar(255),City varchar(255));
+
+--15.)
+SELECT Ename, EmpNo FROM Emp WHERE Sal > 10000;
+
+--16.)
+SELECT MAX(Sal), MIN(Sal), AVG(Sal) FROM Emp;
+
+--17.)
+SELECT COUNT(EmpNo) FROM Emp,Dept where Emp.DeptNo =Dept.DeptNo GROUP BY
+Dept.Loc;
+
+--18.)
+SELECT * from Emp order by Ename desc;
+
+--19.)
+CREATE TABLE EMP_BKP AS SELECT Ename,EmpNo, Sal,Hire_date,Commission,DeptNo,Mgr
+FROM Emp;
+
+--20.)
+SELECT SUBSTRING(Ename,1,3) ,Sal FROM Emp;
+
+--21.)
+SELECT * FROM Emp WHERE Ename like 'S%';
+
+--22.) 
+SELECT Emp.EmpNo from Emp,Dept where Emp.DeptNo =Dept.DeptNo and Dept.Loc
+='Bangalore' ;
+--23.)
+SELECT * FROM Emp WHERE Ename LIKE '[A-K]%';
+--24.)
+SELECT * FROM Emp WHERE Mgr IN (SELECT EmpNo FROM Emp WHERE Ename = 'Stefen');
+--25.)
+SELECT M.Ename FROM Emp E,Emp M WHERE E.Mgr = M.EmpNo GROUP BY M.Mgr HAVING
+COUNT(*)=(SELECT MAX(COUNT(Mgr)) FROM Emp GROUP BY Mgr);
+--26.)
+SELECT * FROM Emp E , Dept D , Emp M WHERE E.Mgr = M.EmpNo and E.Deptno = D.Deptno
+and E.Sal<(SELECT MAX Sal from Emp) LIMIT 1;
+--27
+SELECT * FROM Emp WHERE Empno IN (SELECT Mgr FROM Emp);
+--28.)
+SELECT DATEDIFF (YEAR(GetDate()),YEAR(Hire_date)) AS Experience ,Ename,Empno
+,Sal,commission,DeptNo,Mgr,Hire_date FROM Emp WHERE Empno IN (SELECT Mgr FROM Emp);
+
+--29.)
+SELECT * FROM Emp E, Dept D WHERE E.DeptNo=D.DeptNo AND E.Commission<1000 AND
+D.Loc ='Delhi';
+--30.)
+SELECT * FROM Emp WHERE Hire_date<(SELECT Hire_date FROM Emp WHERE EmpNo=1007) ;
